@@ -39,11 +39,11 @@ function parse (headers, key) {
   let token = ''
   if (headers) {
     const {Authorization, cookie} = headers
-    if (cookie) token = read(cookie)[key]
+    if (cookie) return read(cookie)[key]
     if (Authorization) {
       const [type, bearer] = Authorization.split(' ')
       if (type === 'Bearer') {
-        token = bearer
+        return bearer
       }
     }
   }

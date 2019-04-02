@@ -71,6 +71,17 @@ test('should error if cookie token can not be verified', assert => {
   })
 })
 
+test('should read cookie in priority if both cookie and authorization bearer are present', assert => {
+  assert.plan(1)
+  const payload = {hello: 'world'}
+  allow(req({
+    'cookie': `access_token=${token(payload)};`,
+    'Authorization' : `Bearer ${token({hello: 'beep'})}`
+  }), (err, payload) => {
+    assert.equal(payload.hello, 'world')
+  })
+})
+
 /**
  * Create JWT token.
  *
