@@ -23,6 +23,16 @@ test('should get payload if authorization bearer', assert => {
   })
 })
 
+test('should error if authorization bearer can not be verified', assert => {
+  assert.plan(1)
+  const payload = {hello: 'world'}
+  allow(req({
+    'Authorization': `Bearer ${token(payload, 'coucou')}`
+  }), (err, payload) => {
+    if (err) assert.ok('error')
+  })
+})
+
 /**
  * Create JWT token.
  *
