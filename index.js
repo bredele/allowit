@@ -17,26 +17,25 @@ const parse = require('cookie').parse
 
 module.exports = (req, cb, options) => {
   const headers = req.headers
+  let token = ''
   if (headers) {
     const {Authorization, cookie} = headers
     if (cookie) {
-      const token = parse(cookie)['access_token']
-      return jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) cb(forbidden())
-        else cb(null, decoded)
-      })
+      token = parse(cookie)['access_token']
     }
     if (Authorization) {
-      const [type, token] = Authorization.split(' ')
+      const [type, bearer] = Authorization.split(' ')
       if (type === 'Bearer') {
-        return jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-          if (err) cb(forbidden())
-          else cb(null, decoded)
-        })
+        token = bearer
       }
     }
   }
-  cb(forbidden())
+  if (token) {
+    jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) cb(forbidden())
+      else cb(null, decoded)
+    })
+  } else cb(forbidden())
 }
 
 /**
