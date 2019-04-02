@@ -23,11 +23,20 @@ test('should get payload if authorization bearer', assert => {
   })
 })
 
-test('should error if authorization bearer can not be verified', assert => {
+test('should error if authorization bearer signed with different secret', assert => {
   assert.plan(1)
   const payload = {hello: 'world'}
   allow(req({
     'Authorization': `Bearer ${token(payload, 'coucou')}`
+  }), (err, payload) => {
+    if (err) assert.ok('error')
+  })
+})
+
+test('should error if authorization bearer can not be verified', assert => {
+  assert.plan(1)
+  allow(req({
+    'Authorization': `Bearer `
   }), (err, payload) => {
     if (err) assert.ok('error')
   })
