@@ -3,6 +3,7 @@
  */
 
 const jsonwebtoken = require('jsonwebtoken')
+const parse = require('cookie').parse
 
 /**
  * Parse HTTP request and check for JWT token in authorization bearer as well
@@ -17,6 +18,13 @@ module.exports = (req, cb) => {
   const headers = req.headers
   if (headers) {
     const {Authorization, cookie} = headers
+    if (cookie) {
+      const token = parse(cookie)['access_token']
+      return jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) cb(forbidden())
+        else cb(null, decoded)
+      })
+    }
     if (Authorization) {
       const [type, token] = Authorization.split(' ')
       if (type === 'Bearer') {

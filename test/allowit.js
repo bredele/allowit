@@ -42,6 +42,16 @@ test('should error if authorization bearer can not be verified', assert => {
   })
 })
 
+test('should get payload if cookie token', assert => {
+  assert.plan(1)
+  const payload = {hello: 'world'}
+  allow(req({
+    'cookie': `access_token=${token(payload)};`
+  }), (err, payload) => {
+    assert.equal(payload.hello, 'world')
+  })
+})
+
 /**
  * Create JWT token.
  *
