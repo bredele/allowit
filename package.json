@@ -1,0 +1,29 @@
+{
+  "name": "allowit",
+  "version": "1.0.0",
+  "description": "JWT token/cookie authorization middleware",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bredele/allowit.git"
+  },
+  "keywords": [
+    "jwt",
+    "token",
+    "cookie",
+    "authorization",
+    "allow"
+  ],
+  "author": "Olivier Wietrich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bredele/allowit/issues"
+  },
+  "homepage": "https://github.com/bredele/allowit#readme"
+}
