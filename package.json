@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tape test/*.js"
+    "test": "JWT_SECRET=helloworld tape test/*.js"
   },
   "repository": {
     "type": "git",
@@ -28,5 +28,8 @@
   "homepage": "https://github.com/bredele/allowit#readme",
   "devDependencies": {
     "tape": "^4.10.1"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
   }
 }

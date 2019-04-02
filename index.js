@@ -1,3 +1,8 @@
+/**
+ * Dependencies
+ */
+
+const jsonwebtoken = require('jsonwebtoken')
 
 /**
  * Parse HTTP request and check for JWT token in authorization bearer as well
@@ -9,7 +14,23 @@
  */
 
 module.exports = (req, cb) => {
-  cb(forbidden())
+  const payload = getPayload(req)
+  cb(forbidden(), payload)
+}
+
+/**
+ *
+ */
+
+function getPayload (req, secret = process.env.JWT_SECRET) {
+  const headers = req.headers
+  if (headers) {
+    const {Authorization, cookie} = headers
+    if (Authorization) {
+      const [type, token] = Authorization.split(' ')
+      if (type === 'Bearer') return jsonwebtoken.verify(token, secret)
+    }
+  }
 }
 
 /**
