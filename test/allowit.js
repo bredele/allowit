@@ -82,6 +82,15 @@ test('should read cookie in priority if both cookie and authorization bearer are
   })
 })
 
+test('should allow to change cookie key', assert => {
+  assert.plan(1)
+  const payload = {hello: 'world'}
+  allow(req({
+    'cookie': `allowit=${token(payload)};`
+  }), (err, payload) => {
+    assert.equal(payload.hello, 'world')
+  }, {key: 'allowit'})
+})
 /**
  * Create JWT token.
  *
