@@ -91,6 +91,18 @@ test('should allow to change cookie key', assert => {
     assert.equal(payload.hello, 'world')
   }, {key: 'allowit'})
 })
+
+
+test('should allow to change the token secret', assert => {
+  assert.plan(1)
+  const payload = {hello: 'world'}
+  allow(req({
+    'cookie': `access_token=${token(payload, 'allowit')};`
+  }), (err, payload) => {
+    assert.equal(payload.hello, 'world')
+  }, {secret: 'allowit'})
+})
+
 /**
  * Create JWT token.
  *
