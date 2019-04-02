@@ -20,9 +20,7 @@ module.exports = (req, cb, options) => {
   let token = ''
   if (headers) {
     const {Authorization, cookie} = headers
-    if (cookie) {
-      token = parse(cookie)['access_token']
-    }
+    if (cookie) token = parse(cookie)['access_token']
     if (Authorization) {
       const [type, bearer] = Authorization.split(' ')
       if (type === 'Bearer') {
@@ -30,12 +28,10 @@ module.exports = (req, cb, options) => {
       }
     }
   }
-  if (token) {
-    jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) cb(forbidden())
-      else cb(null, decoded)
-    })
-  } else cb(forbidden())
+  jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) cb(forbidden())
+    else cb(null, decoded)
+  })
 }
 
 /**
