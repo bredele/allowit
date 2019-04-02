@@ -14,23 +14,20 @@ const jsonwebtoken = require('jsonwebtoken')
  */
 
 module.exports = (req, cb) => {
-  const payload = getPayload(req)
-  cb(forbidden(), payload)
-}
-
-/**
- *
- */
-
-function getPayload (req, secret = process.env.JWT_SECRET) {
   const headers = req.headers
   if (headers) {
     const {Authorization, cookie} = headers
     if (Authorization) {
       const [type, token] = Authorization.split(' ')
-      if (type === 'Bearer') return jsonwebtoken.verify(token, secret)
+      if (type === 'Bearer') {
+        return jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+          if (err) cb(forbidden())
+          else cb(null, decoded)
+        })
+      }
     }
   }
+  cb(forbidden())
 }
 
 /**
