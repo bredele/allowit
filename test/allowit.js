@@ -52,6 +52,25 @@ test('should get payload if cookie token', assert => {
   })
 })
 
+test('should error if cookie token signed with different secret', assert => {
+  assert.plan(1)
+  const payload = {hello: 'world'}
+  allow(req({
+    'cookie': `access_token=${token(payload, 'coucou')};`
+  }), (err, payload) => {
+    if (err) assert.ok('error')
+  })
+})
+
+test('should error if cookie token can not be verified', assert => {
+  assert.plan(1)
+  allow(req({
+    'cookie': `access_token=helloworld;`
+  }), (err, payload) => {
+    if (err) assert.ok('error')
+  })
+})
+
 /**
  * Create JWT token.
  *

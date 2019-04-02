@@ -11,10 +11,11 @@ const parse = require('cookie').parse
  *
  * @param {Stream} req
  * @param {Function} cb
+ * @param {Object} options
  * @api public
  */
 
-module.exports = (req, cb) => {
+module.exports = (req, cb, options) => {
   const headers = req.headers
   if (headers) {
     const {Authorization, cookie} = headers
