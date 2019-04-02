@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/bredele/allowit/issues"
   },
-  "homepage": "https://github.com/bredele/allowit#readme"
+  "homepage": "https://github.com/bredele/allowit#readme",
+  "devDependencies": {
+    "tape": "^4.10.1"
+  }
 }
