@@ -3,7 +3,7 @@
  */
 
 const jsonwebtoken = require('jsonwebtoken')
-const parse = require('cookie').parse
+const read = require('cookie').parse
 
 /**
  * Parse HTTP request and check for JWT token in authorization bearer as well
@@ -15,12 +15,31 @@ const parse = require('cookie').parse
  * @api public
  */
 
-module.exports = (req, cb, options) => {
-  const headers = req.headers
+module.exports = (req, cb, options = {}) => {
+  const {
+    key = 'access_token',
+    secret = process.env.JWT_SECRET
+  } = options
+  jsonwebtoken.verify(parse(req.headers, key), secret, (err, decoded) => {
+    if (err) cb(forbidden())
+    else cb(null, decoded)
+  })
+}
+
+/**
+ * Parse request headers and return token.
+ *
+ * @param {Object} headers
+ * @param {String} key
+ * @return {String}
+ * @api private
+ */
+
+function parse (headers, key) {
   let token = ''
   if (headers) {
     const {Authorization, cookie} = headers
-    if (cookie) token = parse(cookie)['access_token']
+    if (cookie) token = read(cookie)[key]
     if (Authorization) {
       const [type, bearer] = Authorization.split(' ')
       if (type === 'Bearer') {
@@ -28,10 +47,7 @@ module.exports = (req, cb, options) => {
       }
     }
   }
-  jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) cb(forbidden())
-    else cb(null, decoded)
-  })
+  return token
 }
 
 /**
