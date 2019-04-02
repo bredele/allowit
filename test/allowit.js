@@ -12,7 +12,18 @@ test('should error if no authorization bearer token', assert => {
   }))
 })
 
+/**
+ * Mock HTTP request.
+ *
+ * @param {Object} header
+ * @return {Object}
+ * @api private
+ */
 
-function req () {
-  
+function req (headers = {}) {
+  return {
+    headers: {
+      ...headers
+    }
+  }
 }
